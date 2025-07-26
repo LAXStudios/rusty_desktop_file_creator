@@ -9,15 +9,17 @@ fn main() {
     let exec = read_input("Path to exec: ");
     let icon = read_input("Path to icon: ");
     let comment = read_input("Comment: ");
+    let categories = read_categories_input("Categories (split using ','): ");
 
     let desktop_file_content = format!(
         "[Desktop Entry]
 Name={}
 Exec={}
 Icon={}
+Categories={}
 Comment={}
 Type=Application",
-        name, exec, icon, comment
+        name, exec, icon, categories, comment
     );
 
     let filename = format!("{}.desktop", name.to_lowercase());
@@ -40,6 +42,18 @@ fn read_input(prompt: &str) -> String {
     std::io::stdin().read_line(&mut input).unwrap();
 
     input.trim().to_string()
+}
+
+fn read_categories_input(prompt: &str) -> String {
+    print!("{}", prompt);
+    std::io::stdout().flush().unwrap();
+
+    let mut input = String::new();
+    std::io::stdin().read_line(&mut input).unwrap();
+
+    let modified_string = input.trim().replace(" ", "").replace(",", ";") + ";";
+
+    return modified_string;
 }
 
 fn get_home_dir() -> String {
